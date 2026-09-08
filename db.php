@@ -68,26 +68,3 @@ try {
     die("Lỗi kết nối Database: " . $e->getMessage());
 }
 ?>
-<?php
-// Lấy thông tin từ Environment Variables đã cấu hình trên Azure
-$host = getenv('DB_HOST') ?: 'qlvt.mysql.database.azure.com';
-$db   = getenv('DB_NAME') ?: 'web_qlvt';
-$user = getenv('DB_USER') ?: 'qlvt';
-$pass = getenv('DB_PASS') ?: 'MAT_KHAU_MYSQL_CUA_BAN';
-$port = 3306;
-
-// Bắt buộc khai báo host dạng Domain/IP và kèm Port để PHP dùng TCP/IP
-$dsn = "mysql:host={$host};port={$port};dbname={$db};charset=utf8mb4";
-
-$options = [
-    PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
-    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-    PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8mb4"
-];
-
-try {
-    $pdo = new PDO($dsn, $user, $pass, $options);
-} catch (\PDOException $e) {
-    die("Lỗi kết nối Database: " . $e->getMessage());
-}
-?>
