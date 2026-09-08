@@ -15,7 +15,7 @@
 $host     = getenv('DB_HOST') ?: 'qlvt.mysql.database.azure.com';
 $dbname   = getenv('DB_NAME') ?: 'web_qlvt';
 $username = getenv('DB_USER') ?: 'qlvt';
-$password = getenv('DB_PASS') ?: ''; // Nhập mật khẩu MySQL Azure của bạn vào đây nếu chưa cài biến môi trường
+$password = getenv('DB_PASS') ?: 'Megaphuhai2005'; // Nhập mật khẩu MySQL Azure của bạn vào đây nếu chưa cài biến môi trường
 $port     = 3306;
 
 // 1. Cấu hình PDO (Cho phần truy vấn PDO)
