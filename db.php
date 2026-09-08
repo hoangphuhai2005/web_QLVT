@@ -1,72 +1,69 @@
 <?php
-// CREATE TABLE nhanvien (
-//   nv_id INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-//   ten_nhan_vien VARCHAR(100) NOT NULL,
-//   dia_chi VARCHAR(255) DEFAULT NULL,
-//   sdt VARCHAR(15) DEFAULT NULL,
-//   email VARCHAR(100) NOT NULL UNIQUE,
-//   username VARCHAR(50) NOT NULL UNIQUE,
-//   -- Cột quan trọng để lưu mật khẩu băm, đảm bảo VARCHAR(255)
-//   password_hash VARCHAR(255) NOT NULL, 
-// );
-
-// INSERT INTO nhanvien (ten_nhan_vien, dia_chi, sdt, email, username, password_hash, ngay_dang_ky) VALUES ('Lam Thần An', 'Hải Phòng', '0901234567', 'lamthanan03@gmail.com', 'nhipham', '$2y$10$izA.VIxGAtCXu84ofdGefuMKy8uJBo1h9hMDZrQi2L1UPNDj/h5fG', '2025-10-01')
-// Lấy cấu hình từ biến môi trường Azure (hoặc dùng giá trị Azure MySQL)
-$host     = getenv('DB_HOST') ?: 'qlvt.mysql.database.azure.com';
-$dbname   = getenv('DB_NAME') ?: 'web_qlvt';
-$username = getenv('DB_USER') ?: 'qlvt';
-$password = getenv('DB_PASS') ?: 'Megaphuhai2005'; // Nhập mật khẩu MySQL Azure của bạn vào đây nếu chưa cài biến môi trường
-$port     = 3306;
-
-// 1. Cấu hình PDO (Cho phần truy vấn PDO)
-try {
-    // Bắt buộc có port=3306 và host dạng domain để ép PHP kết nối qua TCP/IP
-    $conn = new PDO("mysql:host=$host;port=$port;dbname=$dbname;charset=utf8mb4", $username, $password, [
-        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
-    ]);
-} catch (PDOException $e) {
-    die("Lỗi kết nối Database (PDO): " . $e->getMessage());
-}
-
-// 2. Cấu hình mysqli (Cho các hàm connect_db cũ)
-$mysqli_conn = null;
-
-function connect_db() {
-    global $mysqli_conn, $host, $username, $password, $dbname, $port;
-    if ($mysqli_conn === null) {
-        // Dùng mysqli_init để tạo kết nối TCP/IP đến Azure
-        $mysqli_conn = mysqli_init();
-        if (!$mysqli_conn->real_connect($host, $username, $password, $dbname, $port)) {
-            die("Lỗi kết nối DB (mysqli): (" . mysqli_connect_errno() . ") " . mysqli_connect_error());
+// FILE: db.php
+// ĐÃ SỬA: gộp 2 khối <?php ... ?> ... <?php ... ?> thành 1 khối duy nhất.
+// Lý do lỗi cũ: giữa 2 khối PHP có 1 dòng trống -> PHP xuất ra 1 ký tự newline
+// ra trình duyệt TRƯỚC KHI login.php kịp gọi header("Location: ..."), gây lỗi:
+// "Cannot modify header information - headers already sent by (output started at db.php:xx)"
+// => Không được để BẤT KỲ ký tự nào (kể cả dòng trống) ở ngoài thẻ <?php ?> trong các file
+// có gọi header()/session_start(). Tốt nhất là không dùng thẻ đóng "?>" ở cuối file.
+ 
+global $conn;
+ 
+// --- Kết nối mysqli (giữ lại để tương thích ngược, KHÔNG tự chạy khi include file) ---
+function connect_db()
+{
+    global $conn;
+    if ($conn === null) {
+        $conn = new mysqli('localhost', 'root', '', 'web_qlvt');
+        if ($conn->connect_errno) {
+            die("Lỗi kết nối DB: (" . $conn->connect_errno . ") " . $conn->connect_error);
         }
-        mysqli_set_charset($mysqli_conn, 'utf8mb4');
+        mysqli_set_charset($conn, 'utf8');
     }
-    return $mysqli_conn;
+    return $conn;
 }
-
-function disconnect_db() {
-    global $mysqli_conn;
-    if ($mysqli_conn) {
-        mysqli_close($mysqli_conn);
-        $mysqli_conn = null;
+ 
+function disconnect_db()
+{
+    global $conn;
+    if ($conn instanceof mysqli) {
+        mysqli_close($conn);
     }
 }
-
-// Lấy thông tin nhân viên từ username
-function get_info_nhanvien($username) {
-    $conn_mysqli = connect_db();
+ 
+// Lấy thông tin nhân viên từ username (dùng mysqli, hiện chưa nơi nào gọi hàm này)
+function get_info_nhanvien($username)
+{
+    global $conn;
+    if (!($conn instanceof mysqli)) {
+        connect_db();
+    }
     $sql = "SELECT nv_id, ten_nhan_vien FROM nhanvien WHERE username = ?";
-
-    $stmt = $conn_mysqli->prepare($sql);
+    $stmt = $conn->prepare($sql);
     $stmt->bind_param("s", $username);
     $stmt->execute();
-
     $result = $stmt->get_result();
     $data = $result->fetch_assoc();
-
     $stmt->close();
     return $data;
 }
-?>
-
+ 
+// --- Kết nối PDO: đây là kết nối CHÍNH mà toàn bộ web đang dùng qua biến $conn ---
+// Ưu tiên lấy thông tin kết nối từ biến môi trường (App Settings trên Azure),
+// nếu không có thì dùng mặc định của XAMPP (localhost/root/'') để chạy local như cũ.
+$db_host = getenv('DB_HOST') ?: 'localhost';
+$db_name = getenv('DB_NAME') ?: 'web_qlvt';
+$db_user = getenv('DB_USER') ?: 'root';
+$db_pass = getenv('DB_PASS') ?: '';
+ 
+try {
+    $conn = new PDO(
+        "mysql:host=$db_host;dbname=$db_name;charset=utf8mb4",
+        $db_user,
+        $db_pass
+    );
+    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+} catch (PDOException $e) {
+    die("Lỗi kết nối Database: " . $e->getMessage());
+}
+ 
