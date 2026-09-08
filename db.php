@@ -1,5 +1,4 @@
 <?php
-
 // CREATE TABLE nhanvien (
 //   nv_id INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
 //   ten_nhan_vien VARCHAR(100) NOT NULL,
@@ -12,59 +11,62 @@
 // );
 
 // INSERT INTO nhanvien (ten_nhan_vien, dia_chi, sdt, email, username, password_hash, ngay_dang_ky) VALUES ('Lam Thần An', 'Hải Phòng', '0901234567', 'lamthanan03@gmail.com', 'nhipham', '$2y$10$izA.VIxGAtCXu84ofdGefuMKy8uJBo1h9hMDZrQi2L1UPNDj/h5fG', '2025-10-01')
+// Lấy cấu hình từ biến môi trường Azure (hoặc dùng giá trị Azure MySQL)
+$host     = getenv('DB_HOST') ?: 'qlvt.mysql.database.azure.com';
+$dbname   = getenv('DB_NAME') ?: 'web_qlvt';
+$username = getenv('DB_USER') ?: 'qlvt';
+$password = getenv('DB_PASS') ?: ''; // Nhập mật khẩu MySQL Azure của bạn vào đây nếu chưa cài biến môi trường
+$port     = 3306;
 
-global $conn;
+// 1. Cấu hình PDO (Cho phần truy vấn PDO)
+try {
+    // Bắt buộc có port=3306 và host dạng domain để ép PHP kết nối qua TCP/IP
+    $conn = new PDO("mysql:host=$host;port=$port;dbname=$dbname;charset=utf8mb4", $username, $password, [
+        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
+    ]);
+} catch (PDOException $e) {
+    die("Lỗi kết nối Database (PDO): " . $e->getMessage());
+}
 
-function connect_db(){
-    global $conn;
-    if($conn === null){
-        
-                $conn = new mysqli('localhost', 'root', '', 'WEB_QLVT');
-        if($conn){
-            mysqli_set_charset($conn, 'utf8');
-        } else echo "Kết nối thất bại";
+// 2. Cấu hình mysqli (Cho các hàm connect_db cũ)
+$mysqli_conn = null;
 
-        if($conn->connect_errno){
-            die ("Lỗi kết nối DB: (" . $conn->connect_errno . ") " . $conn->connect_error);
-        }   
+function connect_db() {
+    global $mysqli_conn, $host, $username, $password, $dbname, $port;
+    if ($mysqli_conn === null) {
+        // Dùng mysqli_init để tạo kết nối TCP/IP đến Azure
+        $mysqli_conn = mysqli_init();
+        if (!$mysqli_conn->real_connect($host, $username, $password, $dbname, $port)) {
+            die("Lỗi kết nối DB (mysqli): (" . mysqli_connect_errno() . ") " . mysqli_connect_error());
+        }
+        mysqli_set_charset($mysqli_conn, 'utf8mb4');
     }
-    return $conn;
+    return $mysqli_conn;
 }
 
 function disconnect_db() {
-    global $conn;
-    if ($conn) {
-        mysqli_close($conn);
+    global $mysqli_conn;
+    if ($mysqli_conn) {
+        mysqli_close($mysqli_conn);
+        $mysqli_conn = null;
     }
 }
 
-// Lấy thông tin khách hàng từ username (Dùng cho Index)
+// Lấy thông tin nhân viên từ username
 function get_info_nhanvien($username) {
-    global $conn;
-    connect_db();
+    $conn_mysqli = connect_db();
     $sql = "SELECT nv_id, ten_nhan_vien FROM nhanvien WHERE username = ?";
 
-    $stmt = $conn->prepare($sql);
+    $stmt = $conn_mysqli->prepare($sql);
     $stmt->bind_param("s", $username);
     $stmt->execute();
 
     $result = $stmt->get_result();
     $data = $result->fetch_assoc();
-    
-    $stmt->close();
-    return $data; // Trả về mảng ['nv_id' => ..., 'ten_nhan_vien' => ...]
-}
-?>
-<?php
-$host = 'localhost';
-$dbname = 'web_qlvt';
-$username = 'root';
-$password = '';
 
-try {
-    $conn = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $username, $password);
-    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-} catch (PDOException $e) {
-    die("Lỗi kết nối Database: " . $e->getMessage());
+    $stmt->close();
+    return $data;
 }
 ?>
+
