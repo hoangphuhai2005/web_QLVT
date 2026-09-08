@@ -6,13 +6,13 @@
 -- Generation Time: Jan 04, 2026 at 03:24 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
-
+ 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-
+ 
 START TRANSACTION;
-
+ 
 SET time_zone = "+00:00";
-
+ 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */
 ;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */
@@ -21,17 +21,19 @@ SET time_zone = "+00:00";
 ;
 /*!40101 SET NAMES utf8mb4 */
 ;
-
+ 
 --
 -- Database: `web_qlvt`
 --
-
+ 
 -- --------------------------------------------------------
-
+ 
 --
 -- Table structure for table `chitietdonhang`
 --
-
+ 
+DROP TABLE IF EXISTS `chitietdonhang`;
+ 
 CREATE TABLE `chitietdonhang` (
     `ctdh_id` int(11) NOT NULL,
     `dh_id` int(11) NOT NULL,
@@ -39,13 +41,15 @@ CREATE TABLE `chitietdonhang` (
     `khoi_luong` int(11) NOT NULL,
     `gia_don_vi` decimal(10, 2) NOT NULL
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci;
-
+ 
 -- --------------------------------------------------------
-
+ 
 --
 -- Table structure for table `ct_phieu_nhap`
 --
-
+ 
+DROP TABLE IF EXISTS `ct_phieu_nhap`;
+ 
 CREATE TABLE `ct_phieu_nhap` (
     `id` int(11) NOT NULL,
     `phieu_nhap_id` int(11) NOT NULL,
@@ -53,11 +57,11 @@ CREATE TABLE `ct_phieu_nhap` (
     `so_luong` int(11) NOT NULL,
     `don_gia` decimal(15, 2) DEFAULT 0.00
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_unicode_ci;
-
+ 
 --
 -- Dumping data for table `ct_phieu_nhap`
 --
-
+ 
 INSERT INTO
     `ct_phieu_nhap` (
         `id`,
@@ -67,24 +71,26 @@ INSERT INTO
         `don_gia`
     )
 VALUES (1, 1, 'SH92', 200, 0.00);
-
+ 
 -- --------------------------------------------------------
-
+ 
 --
 -- Table structure for table `ct_phieu_xuat`
 --
-
+ 
+DROP TABLE IF EXISTS `ct_phieu_xuat`;
+ 
 CREATE TABLE `ct_phieu_xuat` (
     `id` int(11) NOT NULL,
     `phieu_xuat_id` int(11) NOT NULL,
     `ma_sp` varchar(50) NOT NULL,
     `so_luong` int(11) NOT NULL
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_unicode_ci;
-
+ 
 --
 -- Dumping data for table `ct_phieu_xuat`
 --
-
+ 
 INSERT INTO
     `ct_phieu_xuat` (
         `id`,
@@ -94,13 +100,15 @@ INSERT INTO
     )
 VALUES (1, 1, 'SH92', 10),
     (2, 2, 'SH92', 6);
-
+ 
 -- --------------------------------------------------------
-
+ 
 --
 -- Table structure for table `customers`
 --
-
+ 
+DROP TABLE IF EXISTS `customers`;
+ 
 CREATE TABLE `customers` (
     `id` int(11) NOT NULL,
     `name` varchar(200) NOT NULL,
@@ -109,11 +117,11 @@ CREATE TABLE `customers` (
     `address` text DEFAULT NULL,
     `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci;
-
+ 
 --
 -- Dumping data for table `customers`
 --
-
+ 
 INSERT INTO
     `customers` (
         `id`,
@@ -179,13 +187,15 @@ VALUES (
         '12/333b/ văn cao',
         '2026-01-04 12:45:47'
     );
-
+ 
 -- --------------------------------------------------------
-
+ 
 --
 -- Table structure for table `donhang`
 --
-
+ 
+DROP TABLE IF EXISTS `donhang`;
+ 
 CREATE TABLE `donhang` (
     `dh_id` int(11) NOT NULL,
     `kh_id` int(11) NOT NULL,
@@ -193,13 +203,15 @@ CREATE TABLE `donhang` (
     `trang_thai` varchar(50) NOT NULL,
     `tong_tien` decimal(10, 2) NOT NULL
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci;
-
+ 
 -- --------------------------------------------------------
-
+ 
 --
 -- Table structure for table `hopdong_chi_tiet`
 --
-
+ 
+DROP TABLE IF EXISTS `hopdong_chi_tiet`;
+ 
 CREATE TABLE `hopdong_chi_tiet` (
     `id` int(11) NOT NULL,
     `ma_hd` varchar(50) DEFAULT NULL,
@@ -224,11 +236,11 @@ CREATE TABLE `hopdong_chi_tiet` (
     ) DEFAULT 'Moi_Tao',
     `ngay_tao` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci;
-
+ 
 --
 -- Dumping data for table `hopdong_chi_tiet`
 --
-
+ 
 INSERT INTO
     `hopdong_chi_tiet` (
         `id`,
@@ -266,13 +278,15 @@ VALUES (
         'Moi_Tao',
         '2026-01-03 03:37:55'
     );
-
+ 
 -- --------------------------------------------------------
-
+ 
 --
 -- Table structure for table `khachhang`
 --
-
+ 
+DROP TABLE IF EXISTS `khachhang`;
+ 
 CREATE TABLE `khachhang` (
     `kh_id` int(11) NOT NULL,
     `ten_khach_hang` varchar(100) NOT NULL,
@@ -283,11 +297,11 @@ CREATE TABLE `khachhang` (
     `password_hash` varchar(255) NOT NULL,
     `ngay_dang_ky` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci;
-
+ 
 --
 -- Dumping data for table `khachhang`
 --
-
+ 
 INSERT INTO
     `khachhang` (
         `kh_id`,
@@ -409,13 +423,15 @@ VALUES (
         '',
         '2026-01-03 04:13:46'
     );
-
+ 
 -- --------------------------------------------------------
-
+ 
 --
 -- Table structure for table `lenh_van_chuyen`
 --
-
+ 
+DROP TABLE IF EXISTS `lenh_van_chuyen`;
+ 
 CREATE TABLE `lenh_van_chuyen` (
     `ma_lenh` int(11) NOT NULL,
     `ten_khach_hang` varchar(255) NOT NULL,
@@ -440,11 +456,11 @@ CREATE TABLE `lenh_van_chuyen` (
     `ngay_tiep_nhan` datetime DEFAULT NULL,
     `loai_su_co` varchar(50) DEFAULT NULL
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_unicode_ci;
-
+ 
 --
 -- Dumping data for table `lenh_van_chuyen`
 --
-
+ 
 INSERT INTO
     `lenh_van_chuyen` (
         `ma_lenh`,
@@ -769,13 +785,15 @@ VALUES (
         NULL,
         NULL
     );
-
+ 
 -- --------------------------------------------------------
-
+ 
 --
 -- Table structure for table `nhanvien`
 --
-
+ 
+DROP TABLE IF EXISTS `nhanvien`;
+ 
 CREATE TABLE `nhanvien` (
     `nv_id` int(11) NOT NULL,
     `ten_nhan_vien` varchar(100) NOT NULL,
@@ -785,11 +803,11 @@ CREATE TABLE `nhanvien` (
     `username` varchar(50) NOT NULL,
     `password_hash` varchar(255) NOT NULL
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci;
-
+ 
 --
 -- Dumping data for table `nhanvien`
 --
-
+ 
 INSERT INTO
     `nhanvien` (
         `nv_id`,
@@ -809,13 +827,15 @@ VALUES (
         'nhipham',
         '$2y$10$XijECvovSTnQtCE4KL/II.S.xr4MRtiZX45Xt.oK.m.ob5vENtih2'
     );
-
+ 
 -- --------------------------------------------------------
-
+ 
 --
 -- Table structure for table `orders`
 --
-
+ 
+DROP TABLE IF EXISTS `orders`;
+ 
 CREATE TABLE `orders` (
     `id` int(11) NOT NULL,
     `customer_id` int(11) NOT NULL,
@@ -828,11 +848,11 @@ CREATE TABLE `orders` (
     `price` decimal(12, 2) DEFAULT 0.00,
     `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci;
-
+ 
 --
 -- Dumping data for table `orders`
 --
-
+ 
 INSERT INTO
     `orders` (
         `id`,
@@ -846,8 +866,8 @@ INSERT INTO
         `price`,
         `created_at`
     )
-VALUES (
-        0,
+VALUES     (
+        1,
         1,
         'Hải Phòng',
         'Đà Nẵng',
@@ -858,8 +878,8 @@ VALUES (
         1990000.00,
         '2026-01-02 08:21:13'
     ),
-    (
-        0,
+        (
+        2,
         1,
         'Hải Phòng',
         'Đà Nẵng',
@@ -870,8 +890,8 @@ VALUES (
         1990000.00,
         '2026-01-02 08:22:28'
     ),
-    (
-        0,
+        (
+        3,
         1,
         'Hải Phòng',
         'Đà Nẵng',
@@ -882,8 +902,8 @@ VALUES (
         233223.00,
         '2026-01-02 08:24:22'
     ),
-    (
-        0,
+        (
+        4,
         1,
         'Hải Phòng',
         'ewr',
@@ -894,8 +914,8 @@ VALUES (
         0.00,
         '2026-01-02 08:55:41'
     ),
-    (
-        0,
+        (
+        5,
         1,
         'Hải Phòng',
         'Đà Nẵng',
@@ -906,8 +926,8 @@ VALUES (
         180.00,
         '2026-01-03 04:01:50'
     ),
-    (
-        0,
+        (
+        6,
         3,
         'Hải Phòng',
         'Đà Nẵng',
@@ -918,8 +938,8 @@ VALUES (
         2132321.00,
         '2026-01-03 04:10:42'
     ),
-    (
-        0,
+        (
+        7,
         4,
         'Hải Phòng',
         'Hà Nội',
@@ -930,8 +950,8 @@ VALUES (
         10000000.00,
         '2026-01-03 04:15:52'
     ),
-    (
-        0,
+        (
+        8,
         7,
         'An Dương',
         'Hà Nội',
@@ -942,8 +962,8 @@ VALUES (
         270.00,
         '2026-01-04 08:47:34'
     ),
-    (
-        0,
+        (
+        9,
         7,
         'An Dương',
         'Đà Nẵng',
@@ -954,8 +974,8 @@ VALUES (
         1000000.00,
         '2026-01-04 08:52:02'
     ),
-    (
-        0,
+        (
+        10,
         7,
         'An Dương',
         'Hà Nội',
@@ -966,13 +986,15 @@ VALUES (
         689217.00,
         '2026-01-04 09:48:11'
     );
-
+ 
 -- --------------------------------------------------------
-
+ 
 --
 -- Table structure for table `phieu_nhap`
 --
-
+ 
+DROP TABLE IF EXISTS `phieu_nhap`;
+ 
 CREATE TABLE `phieu_nhap` (
     `id` int(11) NOT NULL,
     `ma_phieu` varchar(50) NOT NULL,
@@ -981,11 +1003,11 @@ CREATE TABLE `phieu_nhap` (
     `nguoi_tao` varchar(255) DEFAULT NULL,
     `ghi_chu` text DEFAULT NULL
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_unicode_ci;
-
+ 
 --
 -- Dumping data for table `phieu_nhap`
 --
-
+ 
 INSERT INTO
     `phieu_nhap` (
         `id`,
@@ -1003,13 +1025,15 @@ VALUES (
         'Lam Thần An',
         ''
     );
-
+ 
 -- --------------------------------------------------------
-
+ 
 --
 -- Table structure for table `phieu_xuat`
 --
-
+ 
+DROP TABLE IF EXISTS `phieu_xuat`;
+ 
 CREATE TABLE `phieu_xuat` (
     `id` int(11) NOT NULL,
     `ma_phieu` varchar(50) NOT NULL,
@@ -1018,11 +1042,11 @@ CREATE TABLE `phieu_xuat` (
     `ghi_chu` text DEFAULT NULL,
     `ngay_xuat` datetime DEFAULT current_timestamp()
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_unicode_ci;
-
+ 
 --
 -- Dumping data for table `phieu_xuat`
 --
-
+ 
 INSERT INTO
     `phieu_xuat` (
         `id`,
@@ -1048,13 +1072,15 @@ VALUES (
         '',
         '2026-01-04 15:53:35'
     );
-
+ 
 -- --------------------------------------------------------
-
+ 
 --
 -- Table structure for table `sanpham`
 --
-
+ 
+DROP TABLE IF EXISTS `sanpham`;
+ 
 CREATE TABLE `sanpham` (
     `id` int(11) NOT NULL,
     `ma_sp` varchar(50) NOT NULL,
@@ -1065,11 +1091,11 @@ CREATE TABLE `sanpham` (
     `mo_ta` text DEFAULT NULL,
     `ngay_tao` date DEFAULT curdate()
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_unicode_ci;
-
+ 
 --
 -- Dumping data for table `sanpham`
 --
-
+ 
 INSERT INTO
     `sanpham` (
         `id`,
@@ -1141,13 +1167,15 @@ VALUES (
         NULL,
         '2025-12-17'
     );
-
+ 
 -- --------------------------------------------------------
-
+ 
 --
 -- Table structure for table `taixe`
 --
-
+ 
+DROP TABLE IF EXISTS `taixe`;
+ 
 CREATE TABLE `taixe` (
     `ma_tai_xe` int(11) NOT NULL,
     `ho_ten` varchar(100) NOT NULL,
@@ -1170,11 +1198,11 @@ CREATE TABLE `taixe` (
     `ly_do_khoa` varchar(255) DEFAULT NULL,
     `ngay_tao` datetime DEFAULT current_timestamp()
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_unicode_ci;
-
+ 
 --
 -- Dumping data for table `taixe`
 --
-
+ 
 INSERT INTO
     `taixe` (
         `ma_tai_xe`,
@@ -1363,51 +1391,56 @@ VALUES (
         NULL,
         '2025-12-17 16:38:52'
     );
-
+ 
 --
 -- Indexes for dumped tables
 --
-
+ 
 --
 -- Indexes for table `chitietdonhang`
 --
 ALTER TABLE `chitietdonhang`
 ADD PRIMARY KEY (`ctdh_id`),
 ADD KEY `dh_id` (`dh_id`);
-
+ 
 --
 -- Indexes for table `ct_phieu_nhap`
 --
 ALTER TABLE `ct_phieu_nhap`
 ADD PRIMARY KEY (`id`),
 ADD KEY `fk_ct_phieu_nhap_master` (`phieu_nhap_id`);
-
+ 
 --
 -- Indexes for table `ct_phieu_xuat`
 --
 ALTER TABLE `ct_phieu_xuat`
 ADD PRIMARY KEY (`id`),
 ADD KEY `fk_ct_phieu_xuat_master` (`phieu_xuat_id`);
-
+ 
 --
 -- Indexes for table `customers`
 --
 ALTER TABLE `customers` ADD PRIMARY KEY (`id`);
-
+ 
+--
+-- Indexes for table `orders`
+--
+ALTER TABLE `orders` ADD PRIMARY KEY (`id`), ADD KEY `customer_id` (`customer_id`);
+ 
 --
 -- Indexes for table `donhang`
 --
 ALTER TABLE `donhang`
 ADD PRIMARY KEY (`dh_id`),
 ADD KEY `kh_id` (`kh_id`);
-
+ 
 --
 -- Indexes for table `hopdong_chi_tiet`
 --
 ALTER TABLE `hopdong_chi_tiet`
 ADD PRIMARY KEY (`id`),
 ADD UNIQUE KEY `ma_hd` (`ma_hd`);
-
+ 
 --
 -- Indexes for table `khachhang`
 --
@@ -1415,12 +1448,12 @@ ALTER TABLE `khachhang`
 ADD PRIMARY KEY (`kh_id`),
 ADD UNIQUE KEY `email` (`email`),
 ADD UNIQUE KEY `username` (`username`);
-
+ 
 --
 -- Indexes for table `lenh_van_chuyen`
 --
 ALTER TABLE `lenh_van_chuyen` ADD PRIMARY KEY (`ma_lenh`);
-
+ 
 --
 -- Indexes for table `nhanvien`
 --
@@ -1428,156 +1461,163 @@ ALTER TABLE `nhanvien`
 ADD PRIMARY KEY (`nv_id`),
 ADD UNIQUE KEY `email` (`email`),
 ADD UNIQUE KEY `username` (`username`);
-
+ 
 --
 -- Indexes for table `phieu_nhap`
 --
 ALTER TABLE `phieu_nhap`
 ADD PRIMARY KEY (`id`),
 ADD UNIQUE KEY `ma_phieu` (`ma_phieu`);
-
+ 
 --
 -- Indexes for table `phieu_xuat`
 --
 ALTER TABLE `phieu_xuat`
 ADD PRIMARY KEY (`id`),
 ADD UNIQUE KEY `ma_phieu` (`ma_phieu`);
-
+ 
 --
 -- Indexes for table `sanpham`
 --
 ALTER TABLE `sanpham`
 ADD PRIMARY KEY (`id`),
 ADD UNIQUE KEY `ma_sp` (`ma_sp`);
-
+ 
 --
 -- Indexes for table `taixe`
 --
 ALTER TABLE `taixe` ADD PRIMARY KEY (`ma_tai_xe`);
-
+ 
 --
 -- AUTO_INCREMENT for dumped tables
 --
-
+ 
 --
 -- AUTO_INCREMENT for table `chitietdonhang`
 --
 ALTER TABLE `chitietdonhang`
 MODIFY `ctdh_id` int(11) NOT NULL AUTO_INCREMENT;
-
+ 
 --
 -- AUTO_INCREMENT for table `ct_phieu_nhap`
 --
 ALTER TABLE `ct_phieu_nhap`
 MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,
 AUTO_INCREMENT = 2;
-
+ 
 --
 -- AUTO_INCREMENT for table `ct_phieu_xuat`
 --
 ALTER TABLE `ct_phieu_xuat`
 MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,
 AUTO_INCREMENT = 3;
-
+ 
 --
 -- AUTO_INCREMENT for table `customers`
 --
 ALTER TABLE `customers`
 MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,
 AUTO_INCREMENT = 11;
-
+ 
+--
+-- AUTO_INCREMENT for table `orders`
+--
+ALTER TABLE `orders`
+MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,
+AUTO_INCREMENT = 11;
+ 
 --
 -- AUTO_INCREMENT for table `donhang`
 --
 ALTER TABLE `donhang`
 MODIFY `dh_id` int(11) NOT NULL AUTO_INCREMENT;
-
+ 
 --
 -- AUTO_INCREMENT for table `hopdong_chi_tiet`
 --
 ALTER TABLE `hopdong_chi_tiet`
 MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,
 AUTO_INCREMENT = 2;
-
+ 
 --
 -- AUTO_INCREMENT for table `khachhang`
 --
 ALTER TABLE `khachhang`
 MODIFY `kh_id` int(11) NOT NULL AUTO_INCREMENT,
 AUTO_INCREMENT = 23;
-
+ 
 --
 -- AUTO_INCREMENT for table `lenh_van_chuyen`
 --
 ALTER TABLE `lenh_van_chuyen`
 MODIFY `ma_lenh` int(11) NOT NULL AUTO_INCREMENT,
 AUTO_INCREMENT = 19;
-
+ 
 --
 -- AUTO_INCREMENT for table `nhanvien`
 --
 ALTER TABLE `nhanvien`
 MODIFY `nv_id` int(11) NOT NULL AUTO_INCREMENT,
 AUTO_INCREMENT = 4;
-
+ 
 --
 -- AUTO_INCREMENT for table `phieu_nhap`
 --
 ALTER TABLE `phieu_nhap`
 MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,
 AUTO_INCREMENT = 2;
-
+ 
 --
 -- AUTO_INCREMENT for table `phieu_xuat`
 --
 ALTER TABLE `phieu_xuat`
 MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,
 AUTO_INCREMENT = 3;
-
+ 
 --
 -- AUTO_INCREMENT for table `sanpham`
 --
 ALTER TABLE `sanpham`
 MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,
 AUTO_INCREMENT = 96;
-
+ 
 --
 -- AUTO_INCREMENT for table `taixe`
 --
 ALTER TABLE `taixe`
 MODIFY `ma_tai_xe` int(11) NOT NULL AUTO_INCREMENT,
 AUTO_INCREMENT = 11;
-
+ 
 --
 -- Constraints for dumped tables
 --
-
+ 
 --
 -- Constraints for table `chitietdonhang`
 --
 ALTER TABLE `chitietdonhang`
 ADD CONSTRAINT `chitietdonhang_ibfk_1` FOREIGN KEY (`dh_id`) REFERENCES `donhang` (`dh_id`);
-
+ 
 --
 -- Constraints for table `ct_phieu_nhap`
 --
 ALTER TABLE `ct_phieu_nhap`
 ADD CONSTRAINT `fk_ct_phieu_nhap_master` FOREIGN KEY (`phieu_nhap_id`) REFERENCES `phieu_nhap` (`id`) ON DELETE CASCADE;
-
+ 
 --
 -- Constraints for table `ct_phieu_xuat`
 --
 ALTER TABLE `ct_phieu_xuat`
 ADD CONSTRAINT `fk_ct_phieu_xuat_master` FOREIGN KEY (`phieu_xuat_id`) REFERENCES `phieu_xuat` (`id`) ON DELETE CASCADE;
-
+ 
 --
 -- Constraints for table `donhang`
 --
 ALTER TABLE `donhang`
 ADD CONSTRAINT `donhang_ibfk_1` FOREIGN KEY (`kh_id`) REFERENCES `khachhang` (`kh_id`);
-
+ 
 COMMIT;
-
+ 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */
 ;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */
