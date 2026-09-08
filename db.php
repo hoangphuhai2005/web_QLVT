@@ -1,11 +1,9 @@
+
 <?php
 // FILE: db.php
-// ĐÃ SỬA: gộp 2 khối <?php ... ?> ... <?php ... ?> thành 1 khối duy nhất.
-// Lý do lỗi cũ: giữa 2 khối PHP có 1 dòng trống -> PHP xuất ra 1 ký tự newline
-// ra trình duyệt TRƯỚC KHI login.php kịp gọi header("Location: ..."), gây lỗi:
-// "Cannot modify header information - headers already sent by (output started at db.php:xx)"
-// => Không được để BẤT KỲ ký tự nào (kể cả dòng trống) ở ngoài thẻ <?php ?> trong các file
-// có gọi header()/session_start(). Tốt nhất là không dùng thẻ đóng "?>" ở cuối file.
+// Bản sửa: gộp về 1 khối PHP duy nhất, không còn dòng trống hay thẻ đóng nằm
+// giữa file - đó là nguyên nhân gây lỗi "headers already sent" trước đây.
+// Không dùng thẻ đóng ở cuối file để tránh xuất ký tự thừa ra trình duyệt.
  
 global $conn;
  
@@ -16,7 +14,7 @@ function connect_db()
     if ($conn === null) {
         $conn = new mysqli('localhost', 'root', '', 'web_qlvt');
         if ($conn->connect_errno) {
-            die("Lỗi kết nối DB: (" . $conn->connect_errno . ") " . $conn->connect_error);
+            die("Loi ket noi DB: (" . $conn->connect_errno . ") " . $conn->connect_error);
         }
         mysqli_set_charset($conn, 'utf8');
     }
@@ -50,7 +48,7 @@ function get_info_nhanvien($username)
  
 // --- Kết nối PDO: đây là kết nối CHÍNH mà toàn bộ web đang dùng qua biến $conn ---
 // Ưu tiên lấy thông tin kết nối từ biến môi trường (App Settings trên Azure),
-// nếu không có thì dùng mặc định của XAMPP (localhost/root/'') để chạy local như cũ.
+// nếu không có thì dùng mặc định của XAMPP (localhost/root/rỗng) để chạy local như cũ.
 $db_host = getenv('DB_HOST') ?: 'localhost';
 $db_name = getenv('DB_NAME') ?: 'web_qlvt';
 $db_user = getenv('DB_USER') ?: 'root';
@@ -64,6 +62,5 @@ try {
     );
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 } catch (PDOException $e) {
-    die("Lỗi kết nối Database: " . $e->getMessage());
+    die("Loi ket noi Database: " . $e->getMessage());
 }
- 
